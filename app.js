@@ -78,7 +78,22 @@ app.patch('/api/v1/tours/:id', (req, res) => {
   });
 });
 //----------------------------------------------------------------
+//DELETE
+
+app.delete('/api/v1/tours/:id', (req, res) => {
+  if (Number(req.params.id) > tours.length || !tours) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'there is no tour available or the ID is invalid',
+    });
+  }
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
 const port = 3000;
 app.listen(port, () => {
   console.log(`listening on port ${port} http://127.0.0.1:${port}/`); //http://127.0.0.1:3000/
 });
+//----------------------------------------------------------------
