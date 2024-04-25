@@ -2,16 +2,11 @@ const express = require('express');
 const fs = require('fs');
 const app = express();
 app.use(express.json());
-// app.get('/', (req, res) => {
-//   res.status(200).json({ message: 'Hello from the server', app: 'Natours' });
-// });
 
-// app.post('/', (req, res) => {
-//   res.send('You can post to this endpoint');
-// });
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
+//----------------------------------------------------------------
 //GET
 app.get('/api/v1/tours', (req, res) => {
   res.status(200).json({
@@ -38,7 +33,7 @@ app.get('/api/v1/tours/:id', (req, res) => {
     },
   });
 }); //http://127.0.0.1:3000/api/v1/tours/5
-
+//----------------------------------------------------------------
 //POST a tour
 app.post('/api/v1/tours', (req, res) => {
   // Assuming `tours` is defined and contains tour objects
@@ -67,7 +62,22 @@ app.post('/api/v1/tours', (req, res) => {
     }
   );
 });
+//----------------------------------------------------------------
+//PATCH(Update)
 
+app.patch('/api/v1/tours/:id', (req, res) => {
+  if (Number(req.params.id) > tours.length || !tours) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'there is no tour available or the ID is invalid',
+    });
+  }
+  res.status(200).json({
+    status: 'success',
+    data: { tour: '<Updated tour here ...>' },
+  });
+});
+//----------------------------------------------------------------
 const port = 3000;
 app.listen(port, () => {
   console.log(`listening on port ${port} http://127.0.0.1:${port}/`); //http://127.0.0.1:3000/
