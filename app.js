@@ -8,15 +8,15 @@ const tours = JSON.parse(
 );
 //----------------------------------------------------------------
 //GET
-app.get('/api/v1/tours', (req, res) => {
+const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
     results: tours.length,
     data: { tours },
   });
-}); //http://127.0.0.1:3000/api/v1/tours
+};
 
-app.get('/api/v1/tours/:id', (req, res) => {
+const getTour = (req, res) => {
   console.log(req.params);
   const id = Number(req.params.id);
   const tour = tours.find((el) => el.id === id);
@@ -32,10 +32,12 @@ app.get('/api/v1/tours/:id', (req, res) => {
       tours: tour,
     },
   });
-}); //http://127.0.0.1:3000/api/v1/tours/5
+};
+
 //----------------------------------------------------------------
 //POST a tour
-app.post('/api/v1/tours', (req, res) => {
+
+const addTour = (req, res) => {
   // Assuming `tours` is defined and contains tour objects
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
@@ -61,11 +63,11 @@ app.post('/api/v1/tours', (req, res) => {
       }
     }
   );
-});
+};
+
 //----------------------------------------------------------------
 //PATCH(Update)
-
-app.patch('/api/v1/tours/:id', (req, res) => {
+const updateTour = (req, res) => {
   if (Number(req.params.id) > tours.length || !tours) {
     return res.status(404).json({
       status: 'fail',
@@ -76,24 +78,41 @@ app.patch('/api/v1/tours/:id', (req, res) => {
     status: 'success',
     data: { tour: '<Updated tour here ...>' },
   });
-});
+};
+
 //----------------------------------------------------------------
 //DELETE
-
-app.delete('/api/v1/tours/:id', (req, res) => {
-  if (Number(req.params.id) > tours.length || !tours) {
+const deleteTour = (req, res) => {
+  const id = Number(req.params.id);
+  const tourIndex = tours.findIndex((tour) => tour.id === id);
+  if (tourIndex === -1) {
     return res.status(404).json({
       status: 'fail',
-      message: 'there is no tour available or the ID is invalid',
+      message: 'Tour not found',
     });
   }
+  tours.splice(tourIndex, 1);
   res.status(204).json({
     status: 'success',
     data: null,
   });
-});
+};
+//----------------------------------------------------------------
+//app.get('/api/v1/tours', getAllTours); //http://127.0.0.1:3000/api/v1/tours
+//app.get('/api/v1/tours/:id', getTour); //http://127.0.0.1:3000/api/v1/tours/5
+//app.post('/api/v1/tours', addTour);
+//app.patch('/api/v1/tours/:id', updateTour);
+//app.delete('/api/v1/tours/:id', deleteTour);
+
+app.route('/api/v1/tours').get(getAllTours).post(addTour);
+app
+  .route('/api/v1/tours/:id')
+  .get(getTour)
+  .patch(updateTour)
+  .delete(deleteTour);
+//----------------------------------------------------------------
 const port = 3000;
 app.listen(port, () => {
-  console.log(`listening on port ${port} http://127.0.0.1:${port}/`); //http://127.0.0.1:3000/
+  console.log(`Server listening on port ${port}`);
 });
 //----------------------------------------------------------------
