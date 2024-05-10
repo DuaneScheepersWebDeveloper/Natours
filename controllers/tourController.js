@@ -1,10 +1,9 @@
 const fs = require('fs');
-//----------------------------------------------------------------
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
 );
 
-//GET
+// GET all tours
 exports.getAllTours = (req, res) => {
   console.log(req.requestTime);
   res.status(200).json({
@@ -15,35 +14,34 @@ exports.getAllTours = (req, res) => {
   });
 };
 
+// GET a single tour
 exports.getTour = (req, res) => {
-  console.log(req.params);
   const id = Number(req.params.id);
   const tour = tours.find((el) => el.id === id);
-  if (id > tours.length || !tour) {
+
+  if (!tour) {
     return res.status(404).json({
       status: 'fail',
-      message: 'Invalid ID or there is no tour available',
+      message: 'Tour not found',
     });
   }
+
   res.status(200).json({
     status: 'success',
     data: {
-      tours: tour,
+      tour: tour,
     },
   });
 };
 
-//----------------------------------------------------------------
-//POST a tour
-
+// POST a tour
 exports.addTour = (req, res) => {
-  // Assuming `tours` is defined and contains tour objects
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
 
   tours.push(newTour);
   fs.writeFile(
-    `${__dirname}/dev-data/data/tours-simple.json`,
+    `${__dirname}/../dev-data/data/tours-simple.json`,
     JSON.stringify(tours),
     (err) => {
       if (err) {
@@ -64,23 +62,12 @@ exports.addTour = (req, res) => {
   );
 };
 
-//----------------------------------------------------------------
-//PATCH(Update)
+// PATCH(Update)
 exports.updateTour = (req, res) => {
-  if (Number(req.params.id) > tours.length || !tours) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'there is no tour available or the ID is invalid',
-    });
-  }
-  res.status(200).json({
-    status: 'success',
-    data: { tour: '<Updated tour here ...>' },
-  });
+  // Implement your update logic here
 };
 
-//----------------------------------------------------------------
-//DELETE
+// DELETE
 exports.deleteTour = (req, res) => {
   const id = Number(req.params.id);
   const tourIndex = tours.findIndex((tour) => tour.id === id);
