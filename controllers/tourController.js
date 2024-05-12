@@ -17,8 +17,11 @@ exports.checkID = (req, res, next, val) => {
 };
 
 exports.checkBody = (req, res, next) => {
+  // Destructure name and price from the request body
+  console.log(`The name of your tour is ${req.body.name}`);
+  console.log(`The price of your tour is ${req.body.price}`);
   if (!req.body.name || !req.body.price) {
-    return res.status(400).json({
+    return res.status(404).json({
       status: 'fail',
       message: 'Missing name or price',
     });

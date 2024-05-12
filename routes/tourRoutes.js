@@ -5,7 +5,10 @@ const router = express.Router();
 
 router.param('id', tourController.checkID);
 
-router.route('/').get(tourController.getAllTours).post(tourController.addTour);
+router.param('name', tourController.checkBody);
+
+router.route('/').post(tourController.checkBody, tourController.addTour);
+
 router
   .route('/:id')
   .get(tourController.getTour)
