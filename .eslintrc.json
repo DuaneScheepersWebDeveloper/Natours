@@ -1,10 +1,18 @@
 {
-  "extends": ["airbnb", "prettier", "plugin:node/recommended"],
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "plugins": ["prettier"],
+  "parserOptions": {
+    "ecmaVersion": 2018, // or the latest version you are using
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true,
+    "es6": true
+  },
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": ["error", { "endOfLine": "lf" }],
     "spaced-comment": "off",
-    "no-console": "warn",
+    "no-console": "off",
     "consistent-return": "off",
     "func-names": "off",
     "object-shorthand": "off",
