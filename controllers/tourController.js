@@ -34,13 +34,6 @@ exports.getTour = async (req, res) => {
       message: err.message,
     });
   }
-
-  // res.status(200).json({
-  //   status: 'success',
-  //   data: {s
-  //     tour,
-  //   },
-  // });
 };
 
 exports.createTour = async (req, res) => {
