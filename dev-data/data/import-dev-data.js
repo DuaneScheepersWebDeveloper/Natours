@@ -58,7 +58,7 @@ const deleteData = async () => {
 };
 if (process.argv[2] === '--import') {
   importData();
-  console.log('Data successfully imported');
+  console.log('Data successfully importedmong');
 } else if (process.argv[2] === '--delete') {
   deleteData();
 }
