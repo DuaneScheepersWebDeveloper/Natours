@@ -14,8 +14,8 @@ mongoose
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    useUnifiedTopology: true, // Add this line
-    ssl: true, // Add this line if you're using SSL
+    useUnifiedTopology: true,
+    ssl: true,
   })
   .then(() => {
     console.log('DB connection successful');
