@@ -4,8 +4,8 @@ const router = express.Router();
 //router.param('id', tourController.checkID);
 //router.param('name', tourController.checkBody);
 router.route('/top-5-tours').get(tourController.aliasTopTours ,tourController.getAllTours)
-
 router.route('/tour-stats').get(tourController.getTourStats);
+router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
 router
   .route('/')
   .post(tourController.createTour)
