@@ -14,7 +14,8 @@ exports.signup = catchAsync(async (req, res, next) => {
   name:req.body.name,
   email:req.body.email,
   password:req.body.password,
-  passwordConfirm:req.body.passwordConfirm
+  passwordConfirm:req.body.passwordConfirm,
+  role: req.body.role
  });
 
  const token = signToken(newUser._id);
@@ -75,3 +76,28 @@ return next(new AppError('You are not logged in'));
 req.user = currentUser;
   next();
 });
+
+exports.restrictTo = (...roles)=>{
+return (req, res,next)=>{
+  //roles ['admin','lead-guide'].role='user'
+  if(!roles.includes(req.user.role)){
+    return next(new AppError('You do not have permission to perform this action',403));
+  }
+  next();
+}
+}
+
+exports.forgotPassword = async (req,res,next) => {
+//1) Get user based on POSTed email
+const user = await User.findOne({email:req.body.email});
+if(!user){
+  return next(new AppError('There is no user with email address.',404));
+}
+//2)Generate the random reset token
+  const resetToken = user.createPasswordResetToken();
+  await user.save({validateBeforeSave:false });
+//3)Send it to user's email
+}
+exports.resetPassword = (req,res,next) => {
+
+}
