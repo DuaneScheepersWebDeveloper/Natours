@@ -4,9 +4,10 @@ const authController = require('./../controllers/authController');
 
 const router = express.Router({ mergeParams: true });
 
-router.route('/').get(reviewController.getAllReviews).post(
+router.route('/').get(reviewController.getAllReviews)
+.post(
   authController.protect,
-  authController.restrictTo('user'), // Make sure this role matches the user's role
+  authController.restrictTo('user', 'admin'), // Make sure this role matches the user's role
   reviewController.createReview,
 );
 
