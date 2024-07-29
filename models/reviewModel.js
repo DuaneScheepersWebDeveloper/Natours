@@ -53,6 +53,3 @@ const Review = mongoose.model('Review', reviewSchema);
 module.exports = Review;
 
 
-//POST / tour/234fhad/reviews
-//GET / tour/234fhad/reviews
-//GET / tour/234fhad/reviews/ahwbhbqwad

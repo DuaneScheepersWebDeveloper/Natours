@@ -2,6 +2,8 @@ const express = require('express');
 const userController = require('./../controllers/userController');
 const authController = require('./../controllers/authController');
 
+
+
 const router = express.Router();
 
 router.post('/signup', authController.signup);
@@ -30,4 +32,12 @@ router
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
 
+
+
+
+
 module.exports = router;
+
+//POST / tour/234fhad/reviews
+//GET / tour/234fhad/reviews
+//GET / tour/234fhad/reviews/ahwbhbqwad
