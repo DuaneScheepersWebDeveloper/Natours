@@ -109,7 +109,6 @@ const tourSchema = new mongoose.Schema(
         ref: 'User',
       },
     ],
-
   },
   {
     toJSON: { virtuals: true },
