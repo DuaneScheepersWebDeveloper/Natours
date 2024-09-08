@@ -3,25 +3,23 @@ const reviewController = require('./../controllers/reviewController');
 const authController = require('./../controllers/authController');
 
 const router = express.Router({ mergeParams: true });
-
-router.route('/').get(reviewController.getAllReviews)
-.post(
-  authController.protect,
-  authController.restrictTo('user', 'admin'), // Make sure this role matches the user's role
-  reviewController.createReview,
+router.use(authController.protect);
+router.route('/').get(reviewController.getAllReviews).post(
+  // Ensure user is authenticated
+  authController.restrictTo('user', 'admin'), // Only users or admins can create reviews
+  reviewController.setTourUserIds, // Set the tour and user IDs
+  reviewController.createReview, // Create the review
 );
-
 router
   .route('/:id')
   .get(reviewController.getReview)
   .patch(
-    authController.protect,
-    authController.restrictTo('user', 'admin'), // Ensure roles match for update
+    authController.restrictTo('user', 'admin'),
+    reviewController.setTourUserIds,
     reviewController.updateReview,
   )
   .delete(
-    authController.protect,
-    authController.restrictTo('user', 'admin'), // Ensure roles match for delete
+    authController.restrictTo('user', 'admin'),
     reviewController.deleteReview,
   );
 
