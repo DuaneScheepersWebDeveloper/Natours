@@ -17,6 +17,9 @@ exports.deleteOne = (Model) =>
 
 exports.updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
+    console.log('Updating review with ID:', req.params.id);
+    console.log('Update data:', req.body);
+
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
@@ -76,7 +79,7 @@ exports.getAll = (Model) =>
       .sort()
       .limitFields()
       .paginate();
-    const doc = await features.query;
+    const doc = await features.query.explain();
 
     res.status(200).json({
       status: 'success',

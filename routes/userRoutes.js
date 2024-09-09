@@ -2,10 +2,15 @@ const express = require('express');
 const userController = require('./../controllers/userController');
 const authController = require('./../controllers/authController');
 
-
-
 const router = express.Router();
+router.use(authController.protect);
+router.use(authController.restrictTo('admin'));
+router.get(
+  '/me',
 
+  userController.getMe,
+  userController.getUser,
+);
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
 
@@ -14,12 +19,12 @@ router.patch('/resetPassword/:token', authController.resetPassword);
 
 router.patch(
   '/updateMyPassword',
-  authController.protect,
-  authController.updatePassword
+
+  authController.updatePassword,
 );
 
-router.patch('/updateMe', authController.protect, userController.updateMe);
-router.delete('/deleteMe', authController.protect, userController.deleteMe);
+router.patch('/updateMe', userController.updateMe);
+router.delete('/deleteMe', userController.deleteMe);
 
 router
   .route('/')
@@ -31,10 +36,6 @@ router
   .get(userController.getUser)
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
-
-
-
-
 
 module.exports = router;
 
