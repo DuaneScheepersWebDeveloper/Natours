@@ -1,4 +1,5 @@
 // reviewModel.js
+const Tour = require('./../models/tourModel');
 const mongoose = require('mongoose');
 
 const reviewSchema = new mongoose.Schema(
@@ -49,6 +50,11 @@ const stats =await this.aggregate([
  }
 ]);
 console.log(stats);
+
+await Tour.findByIdAndUpdate(tourId,{
+  ratingsQuantity:stats[0].nRating,
+  ratingsAverage:stats[0].avgRating
+})
 }
 
 
@@ -75,3 +81,4 @@ reviewSchema.pre(/^find/, function (next) {
 const Review = mongoose.model('Review', reviewSchema);
 
 module.exports = Review;
+
