@@ -60,11 +60,22 @@ await Tour.findByIdAndUpdate(tourId,{
 
 reviewSchema.pre('save', function(next){
   //this points to current review
-
   this.constructor.calcAverageRatings(this.tour)
   next();
 });
 
+//findByIdAndUpdate
+//findByIdAndDelete
+
+reviewSchema.pre(/^findOneAnd/,async function(next){
+  const r = await this.findOne();
+  console.log(r);
+  next();
+})
+
+reviewSchema.pre(/^findOneAnd/,async function(){
+
+})
 
 // Automatically populate tour and user details on query
 reviewSchema.pre(/^find/, function (next) {
@@ -81,4 +92,3 @@ reviewSchema.pre(/^find/, function (next) {
 const Review = mongoose.model('Review', reviewSchema);
 
 module.exports = Review;
-
