@@ -139,7 +139,7 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
         $geoNear: {
           near: {
             type: 'Point',
-            coordinates: [lng * 1, lat * 1] // Longitude comes first in GeoJSON
+            coordinates: [Number(lng), Number(lat)] // Longitude comes first in GeoJSON
           },
           distanceField: 'distance',
           distanceMultiplier: multiplier, // Convert to desired unit
