@@ -70,7 +70,19 @@ app.use((req, res, next) => {
 
 // 3) ROUTES
 app.get('/',(req, res)=>{
-  res.status(200).render('base');
+  const currentUser = {
+    name: 'newUser9',
+    email: 'user9@user.co.za',
+    role: 'admin',
+    photo: 'default.jpg'
+  };
+
+
+  res.status(200).render('base',{
+    tour:'The Forest hiker ',
+    user: currentUser.name,
+    role: currentUser.role
+  });
 })
 
 app.use('/api/v1/tours', tourRouter);
