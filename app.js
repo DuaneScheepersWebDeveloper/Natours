@@ -84,6 +84,7 @@ app.get('/',(req, res)=>{
     role: currentUser.role
   });
 })
+app.get('/overview')
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
