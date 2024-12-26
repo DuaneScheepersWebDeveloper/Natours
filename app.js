@@ -11,7 +11,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
-
+const viewRouter = require('./routes/viewRoutes');
 const app = express();
 
 // Pug
@@ -68,27 +68,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// 3) ROUTES
-app.get('/',(req, res)=>{
-  const currentUser = {
-    name: 'newUser9',
-    email: 'user9@user.co.za',
-    role: 'admin',
-    photo: 'default.jpg'
-  };
 
-
-  res.status(200).render('base',{
-    tour:'The Forest hiker ',
-    user: currentUser.name,
-    role: currentUser.role
-  });
-})
-app.get('/overview')
-
+app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
+
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
