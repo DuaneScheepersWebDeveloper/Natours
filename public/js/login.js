@@ -14,10 +14,17 @@ document.addEventListener('DOMContentLoaded', () => {
         },
       });
       console.log('Response:', res); // Log the whole response object
-      alert(`Username: ${email}\nPassword: ${password}`);
+      if(res.data.status === 'success'){
+        alert(`Username: ${email}\nPassword: ${password}`);
+        window.setTimeout(()=>{
+          location.assign('/');
+        }, 1500);
+      }
+      
     } catch (err) {
       // Check if the error object has a response property before accessing data
       if (err.response) {
+        alert(err.response.data.message);
         console.log('Error Response Data:', err.response.data);
       } else {
         console.log('Error:', err.message); // Log the error message if no response
