@@ -118,6 +118,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 
+
 //Only for Rendered pages, no errors
 exports.isLoggedIn = async (req, res, next) => {
   if (req.cookies.jwt) {
