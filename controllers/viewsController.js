@@ -36,36 +36,53 @@ exports.getTour = catchAsync(async (req, res, next) => {
    });
 });
 
-exports.getLoginForm =(req, res, next)=>{
-   res.status(200).render('login',{
+exports.getLoginForm = (req, res, next) => {
+   res.status(200).render('login', {
       title: 'Log into your account'
    });
 }
 
-exports.getAccount = (req, res) => {
-   console.log('Rendering account page for user:', req.user); // Debugging log
+exports.getAccount = catchAsync(async (req, res) => {
+   const updatedUser = await User.findById(req.user.id);
+   console.log('Rendering account page for user:', updatedUser); // Debugging log
    res.status(200).render('account', {
-   title: 'Your Account',
-   user: req.user,
-   });
-};
-
-exports.updateUserData = catchAsync(async (req, res, next) => {
-   const updatedUser = await User.findByIdAndUpdate(
-   req.user.id,
-   {
-      name: req.body.name,
-      email: req.body.email
-   },
-   {
-      new: true,
-      runValidators: true
-   }
-   );
-   res.status(200).render('account', {
-   title: 'Your account',
-   user: updatedUser
+      title: 'Your Account',
+      user: updatedUser,
    });
 });
+
+
+exports.updateUserData = catchAsync(async (req, res, next) => {
+   console.log('Updating user with data:', req.body);
+
+   if (!req.user) {
+      return next(new AppError('User not logged in.', 401));
+   }
+
+   const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+         name: req.body.name,
+         email: req.body.email,
+      },
+      {
+         new: true,
+         runValidators: true,
+      }
+   );
+
+   if (!updatedUser) {
+      return next(new AppError('User not found.', 404));
+   }
+
+   console.log('Updated User:', updatedUser); // Debugging log
+
+   res.status(200).render('account', {
+      title: 'Your account',
+      user: updatedUser,
+   });
+});
+
+
 
 
